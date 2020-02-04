@@ -12,7 +12,7 @@
       "host": "139.196.21.233",
       "port": "22",
       "ref": "origin/master",
-      "repo": "git@github.com:DanielXuuuuu/TodoMVC.git", 
+      "repo": "git@github.com:DanielXuuuuu/TodoMVC-Server.git", 
       "path": "/root/workplace/TodoMVC",
       "ssh_options": "StrictHostKeyChecking=no",
       "env": {
