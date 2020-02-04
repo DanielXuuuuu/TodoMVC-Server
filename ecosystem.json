@@ -15,6 +15,7 @@
       "repo": "git@github.com:DanielXuuuuu/TodoMVC-Server.git", 
       "path": "/root/workplace/TodoMVC",
       "ssh_options": "StrictHostKeyChecking=no",
+      "post-deploy": "npm install",
       "env": {
         "NODE_ENV": "production"
       }
