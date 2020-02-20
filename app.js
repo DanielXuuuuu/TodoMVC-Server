@@ -24,10 +24,11 @@ mongoose.connect(dbConfig.DB_URL, {
 
 // 解决跨域
 app.use(cors({
+  origin:'*',
   exposeHeaders: ['WWW-Authenticate', 'Server-Authorization', 'Date'],
   maxAge: 100,
   credentials: true,
-  allowMethods: ['GET', 'POST', 'OPTIONS', 'DELETE', 'PUT'],
+  allowMethods: ['GET', 'POST', 'PUT','DELETE', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Custom-Header', 'anonymous', 'Cache-Control']
 }));
 
