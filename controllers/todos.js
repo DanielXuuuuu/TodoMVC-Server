@@ -148,20 +148,21 @@ module.exports = {
     const user = await User.findOne({_id: uid});
     const num = user.todos.reduce((count, todo) => 
       count + (todo.completed === oldValue), 0);
+    console.log(num);
     await new Promise((resolve, reject) => {
       User.findById(uid, function(err, doc){
-          if(err){
-            reject(err);
+        if(err){
+          reject(err);
+        }
+        doc.todos.forEach(function(todo){
+          if(todo.completed === oldValue){
+            todo.completed = value
           }
-          doc.todos.forEach(function(todo){
-            if(todo.completed === oldValue){
-              todo.completed = value
-            }
-          });
-          User.collection.save(doc);
-        })
-      res.success = true;
-      resolve();
+        });
+        User.collection.save(doc);
+        res.success = true;
+        resolve();
+      })
       
       // mongodb 3.6 写法
       // User.update({_id: uid, "todos.completed": oldValue},{
@@ -176,23 +177,25 @@ module.exports = {
       //     }
       // })
     });
+    console.log(res);
     if(res.success){
-      const update = (oldValue === false) ? num : -num;
+      const updateNum = (oldValue === false) ? num : -num;
       await new Promise((resolve, reject) => {
         User.findByIdAndUpdate(uid,
-          {$inc: {completedNumber: update}},
+          {$inc: {completedNumber: updateNum}},
           function(err, doc){
             if(err){
               res.success = false;
               reject(err);
             }else if(doc){
               res.message = "修改成功"
-              res.num = update;
+              res.num = updateNum;
               resolve();
             }
           })
         })
     }
+    console.log(res);
     ctx.body = res;
   },
 
