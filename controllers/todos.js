@@ -107,6 +107,7 @@ module.exports = {
           reject(err);
         }else if(doc.nModified === 1){
           res.success = true;
+          res.message = "修改成功";
           resolve();
         }
       })
@@ -119,10 +120,9 @@ module.exports = {
           function(err, doc){
             if(err){
               res.success = false;
+              res.message = "修改失败";
               reject(err);
             }else if(doc){
-              res.success = true;
-              res.message = "修改成功";
               res.num = update;
               resolve();
             }
