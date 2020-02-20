@@ -149,17 +149,32 @@ module.exports = {
     const num = user.todos.reduce((count, todo) => 
       count + (todo.completed === oldValue), 0);
     await new Promise((resolve, reject) => {
-      User.update({_id: uid, "todos.completed": oldValue},{
-        $set:{ "todos.$[].completed": value}},
-        {multi:true},
-        function(err, doc){
+      User.findById(uid, function(err, doc){
           if(err){
             reject(err);
-          }else if(doc){
-            res.success = true;
-            resolve();
           }
-      })
+          doc.todos.forEach(function(todo){
+            if(todo.completed === oldValue){
+              todo.completed = value
+            }
+          });
+          User.collection.save(doc);
+        })
+      res.success = true;
+      resolve();
+      
+      // mongodb 3.6 写法
+      // User.update({_id: uid, "todos.completed": oldValue},{
+      //   $set:{ "todos.$[].completed": value}},
+      //   {multi:true},
+      //   function(err, doc){
+      //     if(err){
+      //       reject(err);
+      //     }else if(doc){
+      //       res.success = true;
+      //       resolve();
+      //     }
+      // })
     });
     if(res.success){
       const update = (oldValue === false) ? num : -num;
